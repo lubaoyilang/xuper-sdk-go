@@ -181,7 +181,7 @@ func NewTransferRequest(from *account.Account, to, amount string, opts ...Reques
 }
 
 // NewDeployContractRequest new request for deploy contract, wasm, evm and native.
-func NewDeployContractRequest(from *account.Account, name string, abi, code []byte, args map[string]string, contractType, runtime string, opts ...RequestOption) (*Request, error) {
+func NewDeployContractRequest(from *account.Account, name string, abi, code []byte, args map[string][]byte, contractType, runtime string, opts ...RequestOption) (*Request, error) {
 	if from == nil || !from.HasContractAccount() {
 		return nil, common.ErrInvalidAccount
 	}
@@ -196,7 +196,7 @@ func NewDeployContractRequest(from *account.Account, name string, abi, code []by
 }
 
 // NewInvokeContractRequest new request for invoke contract, wasm, evm and native.
-func NewInvokeContractRequest(from *account.Account, module, name, method string, args map[string]string, opts ...RequestOption) (*Request, error) {
+func NewInvokeContractRequest(from *account.Account, module, name, method string, args map[string][]byte, opts ...RequestOption) (*Request, error) {
 	if from == nil {
 		return nil, errors.New("invalid initiator")
 	}
@@ -278,7 +278,7 @@ func NewSetAccountACLRequest(from *account.Account, acl *ACL, opts ...RequestOpt
 	return NewRequest(from, Xkernel3Module, "", XkernelSetAccountACLMethod, args, "", "", opts...)
 }
 
-func generateDeployArgs(arg map[string]string, abi, code []byte, module, runtime, contractAccount, contractName string) map[string][]byte {
+func generateDeployArgs(arg map[string][]byte, abi, code []byte, module, runtime, contractAccount, contractName string) map[string][]byte {
 	argstmp := map[string][]byte{}
 	if module == EvmContractModule {
 		argsTmp := make(map[string]interface{}, len(arg))
@@ -313,10 +313,10 @@ func generateDeployArgs(arg map[string]string, abi, code []byte, module, runtime
 	return args
 }
 
-func convertToXuperContractArgs(args map[string]string) map[string][]byte {
+func convertToXuperContractArgs(args map[string][]byte) map[string][]byte {
 	argmap := make(map[string][]byte)
 	for k, v := range args {
-		argmap[k] = []byte(v)
+		argmap[k] = v
 	}
 	return argmap
 }
@@ -335,7 +335,7 @@ func convertToXuper3EvmArgs(args map[string]interface{}) (map[string][]byte, err
 	return ret, nil
 }
 
-func generateInvokeArgs(arg map[string]string, module string) (map[string][]byte, error) {
+func generateInvokeArgs(arg map[string][]byte, module string) (map[string][]byte, error) {
 	if module == EvmContractModule {
 		// todo
 		argsTmp := make(map[string]interface{}, len(arg))

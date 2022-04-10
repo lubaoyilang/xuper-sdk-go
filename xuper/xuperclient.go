@@ -172,7 +172,7 @@ func (x *XClient) Close() error {
 //   - `name`: Contract name.
 //   - `code`: Contract code bytes.
 //   - `args`: Contract init args.
-func (x *XClient) DeployNativeGoContract(from *account.Account, name string, code []byte, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) DeployNativeGoContract(from *account.Account, name string, code []byte, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewDeployContractRequest(from, name, nil, code, args, NativeContractModule, GoRuntime, opts...)
 	if err != nil {
 		return nil, err
@@ -188,7 +188,7 @@ func (x *XClient) DeployNativeGoContract(from *account.Account, name string, cod
 //   - `name`: Contract name.
 //   - `code`: Contract code bytes.
 //   - `args`: Contract init args.
-func (x *XClient) DeployNativeJavaContract(from *account.Account, name string, code []byte, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) DeployNativeJavaContract(from *account.Account, name string, code []byte, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewDeployContractRequest(from, name, nil, code, args, NativeContractModule, JavaRuntime, opts...)
 	if err != nil {
 		return nil, err
@@ -204,7 +204,7 @@ func (x *XClient) DeployNativeJavaContract(from *account.Account, name string, c
 //   - `name`: Contract name.
 //   - `code`: Contract code bytes.
 //   - `args`: Contract init args.
-func (x *XClient) DeployWasmContract(from *account.Account, name string, code []byte, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) DeployWasmContract(from *account.Account, name string, code []byte, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewDeployContractRequest(from, name, nil, code, args, WasmContractModule, CRuntime, opts...)
 	if err != nil {
 		return nil, err
@@ -221,7 +221,7 @@ func (x *XClient) DeployWasmContract(from *account.Account, name string, code []
 //   - `abi` : Solidity contract abi.
 //   - `bin` : Solidity contract bin.
 //   - `args`: Contract init args.
-func (x *XClient) DeployEVMContract(from *account.Account, name string, abi, bin []byte, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) DeployEVMContract(from *account.Account, name string, abi, bin []byte, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewDeployContractRequest(from, name, abi, bin, args, EvmContractModule, "", opts...)
 	if err != nil {
 		return nil, err
@@ -269,7 +269,7 @@ func (x *XClient) UpgradeNativeContract(from *account.Account, name string, code
 //   - `name`  : Contract name.
 //   - `method`: Contract method.
 //   - `args`  : Contract invoke args.
-func (x *XClient) InvokeWasmContract(from *account.Account, name, method string, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) InvokeWasmContract(from *account.Account, name, method string, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewInvokeContractRequest(from, WasmContractModule, name, method, args, opts...)
 	if err != nil {
 		return nil, err
@@ -285,7 +285,7 @@ func (x *XClient) InvokeWasmContract(from *account.Account, name, method string,
 //   - `name`  : Contract name.
 //   - `method`: Contract method.
 //   - `args`  : Contract invoke args.
-func (x *XClient) InvokeNativeContract(from *account.Account, name, method string, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) InvokeNativeContract(from *account.Account, name, method string, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewInvokeContractRequest(from, NativeContractModule, name, method, args, opts...)
 	if err != nil {
 		return nil, err
@@ -301,7 +301,7 @@ func (x *XClient) InvokeNativeContract(from *account.Account, name, method strin
 //   - `name`  : Contract name.
 //   - `method`: Contract method.
 //   - `args`  : Contract invoke args.
-func (x *XClient) InvokeEVMContract(from *account.Account, name, method string, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) InvokeEVMContract(from *account.Account, name, method string, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewInvokeContractRequest(from, EvmContractModule, name, method, args, opts...)
 	if err != nil {
 		return nil, err
@@ -317,7 +317,7 @@ func (x *XClient) InvokeEVMContract(from *account.Account, name, method string, 
 //   - `name`  : Contract name.
 //   - `method`: Contract method.
 //   - `args`  : Contract invoke args.
-func (x *XClient) QueryWasmContract(from *account.Account, name, method string, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) QueryWasmContract(from *account.Account, name, method string, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewInvokeContractRequest(from, WasmContractModule, name, method, args, opts...)
 	if err != nil {
 		return nil, err
@@ -333,7 +333,7 @@ func (x *XClient) QueryWasmContract(from *account.Account, name, method string, 
 //   - `name`  : Contract name.
 //   - `method`: Contract method.
 //   - `args`  : Contract invoke args.
-func (x *XClient) QueryNativeContract(from *account.Account, name, method string, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) QueryNativeContract(from *account.Account, name, method string, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewInvokeContractRequest(from, NativeContractModule, name, method, args, opts...)
 	if err != nil {
 		return nil, err
@@ -348,7 +348,7 @@ func (x *XClient) QueryNativeContract(from *account.Account, name, method string
 //   - `name`  : Contract name.
 //   - `method`: Contract method.
 //   - `args`  : Contract invoke args.
-func (x *XClient) QueryEVMContract(from *account.Account, name, method string, args map[string]string, opts ...RequestOption) (*Transaction, error) {
+func (x *XClient) QueryEVMContract(from *account.Account, name, method string, args map[string][]byte, opts ...RequestOption) (*Transaction, error) {
 	req, err := NewInvokeContractRequest(from, EvmContractModule, name, method, args, opts...)
 	if err != nil {
 		return nil, err
